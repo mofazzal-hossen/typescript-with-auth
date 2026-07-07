@@ -1,98 +1,283 @@
-# Express Server Auth
+# Express + TypeScript + PostgreSQL CRUD API
 
-This project is a TypeScript-based Express server that connects to a PostgreSQL database and provides user-related API endpoints.
+A simple REST API built with **Express**, **TypeScript**, and **PostgreSQL**. This project demonstrates basic CRUD (Create, Read, Update, Delete) operations using the `pg` package.
 
-## What this project does
+---
 
-- Starts a server with Express
-- Accepts JSON and form data
-- Connects to PostgreSQL
-- Creates and manages a users table
-- Supports CRUD operations for users through API routes
+## 🚀 Features
 
-## Packages used and how to install them
+* Express.js Server
+* TypeScript Support
+* PostgreSQL Database
+* Create User
+* Get All Users
+* Get Single User
+* Update User
+* Delete User
+* JSON Request Handling
+* Parameterized SQL Queries (SQL Injection Protection)
 
-Here is the list of packages used in this project:
+---
 
-1. Express
-   - Purpose: Creates the web server and API routes.
-   - Install: `npm install express`
+## 🛠️ Technologies Used
 
-2. pg
-   - Purpose: Connects the server to PostgreSQL and runs SQL queries.
-   - Install: `npm install pg`
+* Node.js
+* Express.js
+* TypeScript
+* PostgreSQL
+* pg
+* ts-node-dev
 
-3. TypeScript
-   - Purpose: Adds type safety to JavaScript code.
-   - Install: `npm install -D typescript`
+---
 
-4. tsx
-   - Purpose: Runs TypeScript files directly during development.
-   - Install: `npm install -D tsx`
+## 📁 Project Structure
 
-5. @types/express
-   - Purpose: Provides TypeScript types for Express.
-   - Install: `npm install -D @types/express`
+```text
+project/
+│
+├── src/
+│   └── server.ts
+│
+├── package.json
+├── tsconfig.json
+├── .env
+└── README.md
+```
 
-6. @types/pg
-   - Purpose: Provides TypeScript types for the pg package.
-   - Install: `npm install -D @types/pg`
+---
 
-## How to run the project
+## 📦 Installation
 
-Install all dependencies:
+Clone the repository:
+
+```bash
+git clone <repository-url>
+```
+
+Go to the project directory:
+
+```bash
+cd project-name
+```
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-## Database setup code
+---
 
-This project uses this code to create the users table automatically if it does not already exist.
+## ▶️ Run the Project
 
-Why this code is used:
-- It connects the server to the PostgreSQL database.
-- It creates the `users` table so the app has a place to store user data.
-- It helps the application start with the correct database structure.
-- It prevents errors when the table already exists by using `IF NOT EXISTS`.
-
-Example code:
-
-```ts
-const initDB = async () => {
-  try {
-    await pool.query(`
-CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(20),
-  email VARCHAR(20) UNIQUE NOT NULL,
-  password VARCHAR(20) NOT NULL,
-  is_active BOOLEAN DEFAULT true,
-  age INT,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-    `)
-
-    console.log("Database connected successfully")
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-initDB()
-```
-
-What it does:
-- connects to PostgreSQL through the `pool`
-- runs a SQL query to create a `users` table
-- logs a success message if the table is ready
-- logs an error if the database operation fails
-
-Start the development server:
+Development Mode
 
 ```bash
 npm run dev
 ```
 
-The server will run on port 9000.
+Production Build
+
+```bash
+npm run build
+```
+
+Run Production
+
+```bash
+npm start
+```
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file.
+
+```env
+DATABASE_URL=postgresql://username:password@host/database?sslmode=require
+PORT=9000
+```
+
+---
+
+## 🗄️ Database Table
+
+```sql
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(20),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    age INT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+---
+
+# API Endpoints
+
+## Create User
+
+**POST**
+
+```text
+/api/user
+```
+
+Request Body
+
+```json
+{
+  "name": "Munna",
+  "email": "munna@gmail.com",
+  "age": 22,
+  "password": "123456"
+}
+```
+
+Response
+
+```json
+{
+  "message": "Successfully created",
+  "data": {
+    "id": 1,
+    "name": "Munna",
+    "email": "munna@gmail.com",
+    "age": 22
+  }
+}
+```
+
+---
+
+## Get All Users
+
+**GET**
+
+```text
+/api/user
+```
+
+---
+
+## Get Single User
+
+**GET**
+
+```text
+/api/user/:id
+```
+
+Example
+
+```text
+/api/user/1
+```
+
+---
+
+## Update User
+
+**PUT**
+
+```text
+/api/user/:id
+```
+
+Request Body
+
+```json
+{
+  "name": "Updated Name",
+  "age": 25,
+  "password": "newpassword",
+  "is_active": true
+}
+```
+
+---
+
+## Delete User
+
+**DELETE**
+
+```text
+/api/user/:id
+```
+
+Example
+
+```text
+/api/user/1
+```
+
+---
+
+## 📌 HTTP Status Codes
+
+| Status Code | Description           |
+| ----------- | --------------------- |
+| 200         | OK                    |
+| 201         | Created               |
+| 400         | Bad Request           |
+| 404         | Not Found             |
+| 409         | Duplicate Resource    |
+| 500         | Internal Server Error |
+
+---
+
+## 📌 Example Response
+
+```json
+{
+  "success": true,
+  "message": "User retrieved successfully",
+  "data": {
+    "id": 1,
+    "name": "Munna",
+    "email": "munna@gmail.com",
+    "age": 22,
+    "is_active": true
+  }
+}
+```
+
+---
+
+## 📌 Future Improvements
+
+* Password Hashing (bcrypt)
+* JWT Authentication
+* Login API
+* Refresh Token
+* Input Validation
+* Environment Variables
+* MVC Architecture
+* Error Handling Middleware
+* Docker Support
+* Swagger API Documentation
+
+---
+
+## 👨‍💻 Author
+
+**Mofazzal Hossen**
+
+Learning Backend Development using:
+
+* TypeScript
+* Express.js
+* PostgreSQL
+* REST API
+* Authentication
+
+---
+
+## ⭐ If you like this project
+
+Give the repository a ⭐ on GitHub.
