@@ -33,9 +33,11 @@ A simple REST API built with **Express**, **TypeScript**, and **PostgreSQL**. Th
 ## 📁 Project Structure
 
 ```text
-project/
+express-server-auth/
 │
 ├── src/
+│   ├── config/
+│   │   └── index.ts
 │   └── server.ts
 │
 ├── package.json
